@@ -92,7 +92,7 @@ def get_nw_rem(message):
     X = data.drop(['Цена'],axis=1)
     y = data['Цена']
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-    model2 = DecisionTreeRegressor(max_depth=14, random_state=42)
+    model2 = RandomForestRegressor(max_depth=14, random_state=42)
     model2.fit(X_train, y_train)
     y_pred2 = model2.predict(X_test)
     df1 =pd.DataFrame({ 
