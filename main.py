@@ -7,7 +7,7 @@ from sklearn.ensemble import RandomForestRegressor
 
 # Настройки для Telegram и Flask
 TOKEN = "7687451703:AAHcWRT7jSbTEBUUjeJW4gM-P9ps42g9tNA"
-WEBHOOK_URL = f"https://dashboard.render.com/web/srv-csiueeu8ii6s73cro12g/{TOKEN}" 
+WEBHOOK_URL = f"https://tgbot-1.onrender.com/{TELEGRAM_TOKEN}" 
 bot = telebot.TeleBot(TOKEN)
 app = Flask(__name__)
 
