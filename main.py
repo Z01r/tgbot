@@ -1,3 +1,4 @@
+import os
 import telebot
 import pandas as pd
 from flask import Flask, request
