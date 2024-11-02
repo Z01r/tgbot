@@ -1,23 +1,28 @@
-import os
 import telebot
 import pandas as pd
 from flask import Flask, request
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor
+import os
 
 # Настройки для Telegram и Flask
-TOKEN = "7687451703:AAHcWRT7jSbTEBUUjeJW4gM-P9ps42g9tNA"
-WEBHOOK_URL = f"https://tgbot-1.onrender.com/{TELEGRAM_TOKEN}" 
+TOKEN = os.environ.get("TELEGRAM_TOKEN")  # Переменная окружения для токена
+WEBHOOK_URL = f"https://tgbot-1.onrender.com/{TOKEN}"  # Укажите URL вашего сервиса на Render
 bot = telebot.TeleBot(TOKEN)
 app = Flask(__name__)
 
-data = pd.read_excel('Homes_enc.xlsx')
-X = data.drop(['Цена'], axis=1)
-y = data['Цена']
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+# Загрузка и подготовка данных
+try:
+    data = pd.read_excel('Homes_enc.xlsx')
+    X = data.drop(['Цена'], axis=1)
+    y = data['Цена']
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-model2 = RandomForestRegressor(max_depth=14, random_state=42)
-model2.fit(X_train, y_train)
+    # Обучение модели
+    model2 = RandomForestRegressor(max_depth=14, random_state=42)
+    model2.fit(X_train, y_train)
+except Exception as e:
+    print(f"Ошибка при загрузке данных или обучении модели: {e}")
 
 @bot.message_handler(commands=['start'])
 def handle_text(message): 
@@ -85,6 +90,7 @@ def get_nw_rem(message):
     global nw_rem
     nw_rem = 1 if message.text.strip().lower() == "да" else 0
     
+    # Формируем данные для прогноза
     df1 = pd.DataFrame({
         'Комнаты': [kk], 
         'Этаж': [et], 
@@ -97,9 +103,15 @@ def get_nw_rem(message):
         'Ремонт_С_ремонтом': [rem]
     })
     
-    reslt = model2.predict(df1).round(1)[0]
-    bot.send_message(message.chat.id, f'Примерная цена: {reslt} сомон')
+    # Получаем прогноз и отправляем результат
+    try:
+        reslt = model2.predict(df1).round(1)[0]
+        bot.send_message(message.chat.id, f'Примерная цена: {reslt} сомон')
+    except Exception as e:
+        bot.send_message(message.chat.id, "Произошла ошибка при получении прогноза.")
+        print(f"Ошибка при прогнозировании: {e}")
 
+# Настройка Webhook
 @app.route(f"/{TOKEN}", methods=['POST'])
 def webhook():
     json_str = request.get_data().decode('UTF-8')
@@ -107,8 +119,12 @@ def webhook():
     bot.process_new_updates([update])
     return "!", 200
 
-bot.remove_webhook()
-bot.set_webhook(url=WEBHOOK_URL)
+# Установка Webhook
+try:
+    bot.remove_webhook()
+    bot.set_webhook(url=WEBHOOK_URL)
+except Exception as e:
+    print(f"Ошибка при установке webhook: {e}")
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
