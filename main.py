@@ -107,5 +107,5 @@ def get_nw_rem(message):
     'Ремонт_С_ремонтом':[rem]})
     reslt = model2.predict(df1).round(1)
     reslt1 = reslt[0]
-    bot.send_message(message.chat.id,f'Примерная цена: от {(reslt1-(0.164*reslt1)).round(1)} до {(reslt1+(0.164*reslt1)).round(1)} сомон')
+    bot.send_message(message.chat.id,f'Примерная ценна : {(reslt1).round(1)} сомон')
 bot.polling(none_stop=True) 
