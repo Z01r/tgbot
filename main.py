@@ -7,7 +7,7 @@ import os
 
 # Настройки для Telegram и Flask
 TOKEN = os.environ.get("TELEGRAM_TOKEN")  # Переменная окружения для токена
-WEBHOOK_URL = f"https://tgbot-2.onrender.com/{TOKEN}"  # Укажите URL вашего сервиса на Render
+WEBHOOK_URL = f"https://tgbot.onrender.com/{TOKEN}"  # Укажите URL вашего сервиса на Render
 bot = telebot.TeleBot(TOKEN)
 app = Flask(__name__)
 
