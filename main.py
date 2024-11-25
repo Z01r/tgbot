@@ -144,5 +144,5 @@ def webhook():
 
 if __name__ == "__main__":
     bot.remove_webhook()
-    bot.set_webhook(url=f"https://ВАШ_ДОМЕН/{token}")  # Замените ВАШ_ДОМЕН на ваш HTTPS-домен или ngrok URL
+    bot.set_webhook(url=f"https://tgbot-2vks.onrender.com/{token}") 
     server.run(host="0.0.0.0", port=5000)
