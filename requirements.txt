@@ -1,6 +1,7 @@
-pyTelegramBotAPI
+Flask
+gunicorn
+pyTelegramBotAPI==4.12.0
 pandas
 catboost
 scikit-learn
-flask
-gunicorn
+openpyxl
