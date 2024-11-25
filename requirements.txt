@@ -1,4 +1,4 @@
-telebot==0.30
+pyTelegramBotAPI
 pandas
 catboost
 scikit-learn
