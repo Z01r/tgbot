@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: telegram-bot
+    env: python
+    plan: free
+    region: frankfurt
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "gunicorn main:server"
+    envVars:
+      - key: TOKEN
+        value: "7687451703:AAHcWRT7jSbTEBUUjeJW4gM-P9ps42g9tNA"
+    autoDeploy: true
